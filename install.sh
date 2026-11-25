@@ -13,17 +13,19 @@ install_fish() {
 
 install_posix() {
     local rc_file="$1"
-    local helper_dest="$HOME/.arch-helpers.sh"
-    cp -v "$SCRIPT_DIR/bash-zsh/arch-helpers.sh" "$helper_dest"
+    local helper_dir="$HOME/.custom-helpers"
+    mkdir -p "$helper_dir"
+    cp -v "$SCRIPT_DIR/bash-zsh/"*.sh "$helper_dir/"
 
-    if ! grep -q "source \"$helper_dest\"" "$rc_file" 2>/dev/null; then
+    local loader='for f in "$HOME/.custom-helpers/"*.sh; do [ -r "$f" ] && source "$f"; done'
+
+    if ! grep -q ".custom-helpers" "$rc_file" 2>/dev/null; then
         echo "" >> "$rc_file"
-        echo "# Arch Linux Helpers (archhelp, appfind, filefind)" >> "$rc_file"
-        echo "source \"$helper_dest\"" >> "$rc_file"
-        echo "archhelp" >> "$rc_file"
-        echo "Added source & startup greeting to $rc_file"
+        echo "# Custom Helpers (appfind, filefind, archhelp, greeting)" >> "$rc_file"
+        echo "$loader" >> "$rc_file"
+        echo "Added loader to $rc_file"
     else
-        echo "Updated $helper_dest (already sourced in $rc_file)"
+        echo "Updated files in $helper_dir (already sourced in $rc_file)"
     fi
 }
 
