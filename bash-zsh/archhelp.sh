@@ -1,51 +1,59 @@
-# Universal Arch Linux GUI & CLI survival cheat sheet
+
+# shellcheck shell=bash
+
 archhelp() {
-    local cyan='\033[0;36m'
-    local yellow='\033[0;33m'
-    local green='\033[0;32m'
-    local magenta='\033[1;35m'
-    local bold='\033[1m'
-    local normal='\033[0m'
+    local cyan=$'\033[0;36m'
+    local yellow=$'\033[0;33m'
+    local green=$'\033[0;32m'
+    local magenta=$'\033[1;35m'
+    local bold=$'\033[1m'
+    local normal=$'\033[0m'
 
-    local distro_name
-    distro_name=$(grep '^PRETTY_NAME=' /etc/os-release 2>/dev/null | cut -d'"' -f2)
-    [ -z "$distro_name" ] && distro_name="Arch Linux Variant"
+    local distro_name="Arch Linux Variant"
 
-    printf "${magenta}>>> ARCH GUI SURVIVAL GUIDE  |  System: %s <<<${normal}\n\n" "$distro_name"
+    if [[ -r /etc/os-release ]]; then
+        # shellcheck disable=SC1091
+        . /etc/os-release
+        distro_name="${PRETTY_NAME:-Arch Linux Variant}"
+    fi
 
-    printf "${bold}${cyan}=== 1. CUSTOM SEARCH HELPERS ===${normal}\n"
-    printf "${green}  appfind <name>                  ${normal}Find installed app (Pacman/AUR + Flatpak)\n"
-    printf "${green}  filefind <name> [path]          ${normal}Search files by name (defaults to ~)\n"
-    printf "${green}  archhelp                        ${normal}Show this cheat sheet anytime\n\n"
+    printf '%s\n\n' "${magenta}>>> ARCH SURVIVAL GUIDE | System: ${distro_name} <<<${normal}"
 
-    printf "${bold}${cyan}=== 2. SYSTEM UPDATES (BY DISTRO & HELPER) ===${normal}\n"
-    printf "${green}  garuda-update                   ${normal}Garuda Linux (auto-fixes keyrings & mirrors)\n"
-    printf "${green}  eos-update                      ${normal}EndeavourOS (official wrapper + AUR)\n"
-    printf "${green}  cachy-update                    ${normal}CachyOS (full system & kernel update)\n"
-    printf "${green}  pamac update                    ${normal}Manjaro (official CLI updater + AUR)\n"
-    printf "${green}  paru -Syu                       ${normal}Arch / Archcraft / CachyOS (via paru AUR helper)\n"
-    printf "${green}  yay -Syu                        ${normal}Arch / Archcraft / EndeavourOS (via yay AUR helper)\n"
-    printf "${green}  sudo pacman -Syu                ${normal}Pure Arch official repositories only\n"
-    printf "${green}  flatpak update                  ${normal}Update all Flatpak desktop apps\n\n"
+    printf '%s\n' "${bold}${cyan}=== 1. CUSTOM HELPERS ===${normal}"
+    printf '%s\n' "${green}  appfind <name>                  ${normal}Search installed apps"
+    printf '%s\n' "${green}  filefind <name> [path]          ${normal}Search files by name"
+    printf '%s\n\n' "${green}  archhelp                        ${normal}Display this guide"
 
-    printf "${bold}${cyan}=== 3. INSTALL, REMOVE & INSPECT PACKAGES ===${normal}\n"
-    printf "${green}  sudo pacman -S <pkg>            ${normal}Install from official Arch repos\n"
-    printf "${green}  paru -S <pkg>                   ${normal}Install from AUR (using paru)\n"
-    printf "${green}  yay -S <pkg>                    ${normal}Install from AUR (using yay)\n"
-    printf "${green}  sudo pacman -Rns <pkg>          ${normal}Clean uninstall (app + unused deps + configs)\n"
-    printf "${green}  pacman -Qq | grep -i <name>     ${normal}Check exact installed package name\n"
-    printf "${green}  pacman -Ql <pkg>                ${normal}List every file owned by an installed package\n\n"
+    printf '%s\n' "${bold}${cyan}=== 2. SYSTEM UPDATES ===${normal}"
+    printf '%s\n' "${green}  garuda-update                   ${normal}Garuda Linux update helper"
+    printf '%s\n' "${green}  eos-update                      ${normal}EndeavourOS update helper"
+    printf '%s\n' "${green}  cachy-update                    ${normal}CachyOS update helper"
+    printf '%s\n' "${green}  pamac update                    ${normal}Manjaro package update"
+    printf '%s\n' "${green}  paru -Syu                       ${normal}Update system using paru"
+    printf '%s\n' "${green}  yay -Syu                        ${normal}Update system using yay"
+    printf '%s\n' "${green}  sudo pacman -Syu                ${normal}Update official repositories"
+    printf '%s\n\n' "${green}  flatpak update                  ${normal}Update Flatpak applications"
 
-    printf "${bold}${cyan}=== 4. SYSTEM CLEANUP & DISK HEALTH ===${normal}\n"
-    printf "${green}  sudo pacman -Rns \$(pacman -Qtdq) ${normal}Remove all unused orphan dependencies\n"
-    printf "${green}  sudo pacman -Sc                 ${normal}Clear old uninstalled package cache\n"
-    printf "${green}  sudo journalctl --vacuum-time=7d${normal}Trim system logs older than 7 days\n"
-    printf "${green}  df -h /                         ${normal}Check available root disk space\n\n"
+    printf '%s\n' "${bold}${cyan}=== 3. PACKAGE MANAGEMENT ===${normal}"
+    printf '%s\n' "${green}  sudo pacman -S <pkg>            ${normal}Install a package"
+    printf '%s\n' "${green}  paru -S <pkg>                   ${normal}Install using paru"
+    printf '%s\n' "${green}  yay -S <pkg>                    ${normal}Install using yay"
+    printf '%s\n' "${green}  sudo pacman -Rns <pkg>          ${normal}Remove package and unused dependencies"
+    printf '%s\n' "${green}  pacman -Qq                      ${normal}List installed package names"
+    printf '%s\n\n' "${green}  pacman -Ql <pkg>                ${normal}List files owned by a package"
 
-    printf "${bold}${cyan}=== 5. SNAPSHOTS & GUI DESKTOP RESCUE ===${normal}\n"
-    printf "${green}  sudo snapper list               ${normal}List Btrfs snapshots & IDs (Garuda / CachyOS)\n"
-    printf "${green}  sudo snapper delete --sync <id> ${normal}Delete old snapshot & free space immediately\n"
-    printf "${green}  sudo systemctl restart sddm     ${normal}Restart frozen login screen / KDE / Hyprland\n"
-    printf "${green}  Ctrl + Alt + F3  (F1/F2 back)   ${normal}Switch to text TTY if GUI freezes\n"
-    printf "${yellow}  * Snapper rule: NEVER delete 0 (current). Keep 1 (baseline) & latest post-update.${normal}\n"
+    printf '%s\n' "${bold}${cyan}=== 4. SYSTEM CLEANUP ===${normal}"
+    printf '%s\n' "${green}  pacman -Qtdq                    ${normal}List orphan packages"
+    printf '%s\n' "${green}  sudo pacman -Sc                 ${normal}Clean package cache"
+    printf '%s\n' "${green}  sudo journalctl --vacuum-time=7d ${normal}Remove old journal entries"
+    printf '%s\n' "${green}  df -h /                         ${normal}Check root disk space"
+    printf '%s\n\n' "${yellow}  Inspect orphan packages before removing them.${normal}"
+
+    printf '%s\n' "${bold}${cyan}=== 5. SNAPSHOTS & DESKTOP RESCUE ===${normal}"
+    printf '%s\n' "${green}  sudo snapper list               ${normal}List Snapper snapshots"
+    printf '%s\n' "${green}  sudo snapper delete <id>        ${normal}Delete a selected snapshot"
+    printf '%s\n' "${green}  sudo systemctl restart sddm     ${normal}Restart the SDDM display manager"
+    printf '%s\n' "${green}  Ctrl + Alt + F3                 ${normal}Switch to a text terminal"
+    printf '%s\n' "${yellow}  Warning: Restarting SDDM can terminate your graphical session.${normal}"
+    printf '%s\n' "${yellow}  Keep important snapshots before system changes.${normal}"
 }

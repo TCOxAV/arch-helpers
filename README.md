@@ -1,47 +1,85 @@
-# arch-helper
 
-Modular CLI helpers and a startup survival guide for **Arch Linux and its variants** (Garuda Linux, EndeavourOS, CachyOS, Manjaro, Archcraft, and Pure Arch).
+# arch-helpers
 
-Every helper lives in its own standalone file and works seamlessly across **Fish**, **Bash**, and **Zsh**.
+A collection of modular CLI helpers and an Arch Linux survival guide for Arch Linux and its derivatives.
 
-## Included Helpers
+Supports **Bash, Zsh, and Fish**.
 
-| Helper | Description |
-| :--- | :--- |
-| `archhelp` | Color-coded Arch survival cheat sheet covering distro updaters, Pacman/AUR, cleanup, Btrfs snapshots, and GUI rescue commands. |
-| `appfind <name>` | Searches installed apps by partial name across **Pacman/AUR** and **Flatpak**. |
-| `filefind <name> [path]` | Searches for files by name (case-insensitive). Defaults to `$HOME` or accepts an optional path. |
-| `greeting` | Auto-runs `archhelp` whenever you open a new interactive terminal (`fish_greeting.fish` / `greeting.sh`). |
+## Features
 
-## Repository Structure
+| Command | Description |
+|---|---|
+| `archhelp` | Displays a colour-coded Arch Linux command reference. |
+| `appfind <name>` | Searches installed Pacman packages and Flatpak applications. |
+| `filefind <name> [path]` | Searches files by name. Defaults to `$HOME`. |
+| `greeting` | Displays the help guide when an interactive Bash/Zsh terminal starts. |
 
-```text
-arch-helper/
-├── install.sh              # Auto-detects shell (or accepts --fish / --bash / --zsh)
-├── readme.md
-├── fish/                   # Fish shell functions (Garuda, CachyOS, etc.)
-│   ├── appfind.fish
-│   ├── archhelp.fish
-│   ├── filefind.fish
-│   └── fish_greeting.fish
-└── bash-zsh/               # Bash & Zsh modular scripts (Pure Arch, EndeavourOS, Manjaro, Archcraft)
-    ├── appfind.sh
-    ├── archhelp.sh
-    ├── filefind.sh
-    └── greeting.sh
-```
+Fish automatically displays the guide through its `fish_greeting` function.
 
-## Quick Installation
+## Requirements
+
+- Arch Linux or an Arch-based distribution.
+- Bash, Zsh, or Fish.
+- Pacman.
+- Flatpak is optional.
+
+## Installation
 
 ```bash
 git clone https://github.com/TCOxAV/arch-helpers.git
-cd arch-helper
+cd arch-helpers
+chmod +x install.sh
 ./install.sh
 ```
 
-### Target a Specific Shell Manually
+The installer detects your default shell automatically.
+
+### Select a shell manually
+
 ```bash
-./install.sh --fish
 ./install.sh --bash
 ./install.sh --zsh
+./install.sh --fish
 ```
+
+Restart your terminal after installation.
+
+## Usage
+
+```bash
+archhelp
+appfind firefox
+filefind config
+filefind config ~/.config
+```
+
+## Uninstallation
+
+For Bash:
+
+Remove the arch-helpers block from `~/.bashrc`, then remove:
+
+```bash
+rm -r ~/.local/lib/arch-helpers
+```
+
+For Zsh:
+
+Remove the arch-helpers block from `~/.zshrc`, then remove:
+
+```bash
+rm -r ~/.local/lib/arch-helpers
+```
+
+For Fish:
+
+```bash
+rm ~/.config/fish/functions/appfind.fish
+rm ~/.config/fish/functions/archhelp.fish
+rm ~/.config/fish/functions/filefind.fish
+rm ~/.config/fish/functions/fish_greeting.fish
+```
+
+## License
+
+See the repository license file.

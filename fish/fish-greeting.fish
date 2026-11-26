@@ -1,3 +1,6 @@
-function fish_greeting --description "Display Arch survival cheat sheet on terminal startup"
-    archhelp
+
+function fish_greeting
+    if functions -q archhelp
+        archhelp
+    end
 end
