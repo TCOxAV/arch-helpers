@@ -42,12 +42,13 @@ archhelp() {
     printf '%s\n' "${green}  pacman -Qq                      ${normal}List installed package names"
     printf '%s\n\n' "${green}  pacman -Ql <pkg>                ${normal}List files owned by a package"
 
-    printf '%s\n' "${bold}${cyan}=== 4. SYSTEM CLEANUP ===${normal}"
+    printf '%s\n' "${bold}${cyan}=== 4. SYSTEM CLEANUP & DISK HEALTH ===${normal}"
     printf '%s\n' "${green}  pacman -Qtdq                    ${normal}List orphan packages"
+    printf '%s\n' "${green}  pacman -Qtdq | xargs -r sudo pacman -Rns --${normal} Remove all orphan packages"
     printf '%s\n' "${green}  sudo pacman -Sc                 ${normal}Clean package cache"
     printf '%s\n' "${green}  sudo journalctl --vacuum-time=7d ${normal}Remove old journal entries"
     printf '%s\n' "${green}  df -h /                         ${normal}Check root disk space"
-    printf '%s\n\n' "${yellow}  Inspect orphan packages before removing them.${normal}"
+    printf '%s\n\n' "${yellow}  Review orphan packages before removing them.${normal}"
 
     printf '%s\n' "${bold}${cyan}=== 5. SNAPSHOTS & DESKTOP RESCUE ===${normal}"
     printf '%s\n' "${green}  sudo snapper list               ${normal}List Snapper snapshots"
