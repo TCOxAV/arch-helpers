@@ -82,4 +82,4 @@ rm ~/.config/fish/functions/fish_greeting.fish
 
 ## License
 
-See the repository license file.
+MIT License — see [LICENSE](LICENSE) for details.
