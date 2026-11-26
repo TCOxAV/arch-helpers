@@ -46,12 +46,13 @@ function archhelp --description "Arch Linux CLI survival guide"
     echo "$green  pacman -Ql <pkg>                $normal List files owned by a package"
     echo
 
-    echo "$bold$cyan=== 4. SYSTEM CLEANUP ===$normal"
+    echo "$bold$cyan=== 4. SYSTEM CLEANUP & DISK HEALTH ===$normal"
     echo "$green  pacman -Qtdq                    $normal List orphan packages"
+    echo "$green  pacman -Qtdq | xargs -r sudo pacman -Rns -- $normal Remove all orphan packages"
     echo "$green  sudo pacman -Sc                 $normal Clean package cache"
     echo "$green  sudo journalctl --vacuum-time=7d $normal Remove old journal entries"
     echo "$green  df -h /                         $normal Check root disk space"
-    echo "$yellow  Inspect orphan packages before removing them.$normal"
+    echo "$yellow  Review orphan packages before removing them.$normal"
     echo
 
     echo "$bold$cyan=== 5. SNAPSHOTS & DESKTOP RESCUE ===$normal"
